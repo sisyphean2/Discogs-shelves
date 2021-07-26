@@ -57,6 +57,7 @@ export default function Shelf({ records, shelf, dispatch }) {
       </Box>
 
       <ListItem
+        className={'single-shelf'}
         key={shelf.id}
         style={{
           backgroundColor: '#f5f5f5',
@@ -71,7 +72,6 @@ export default function Shelf({ records, shelf, dispatch }) {
               style={{
                 display: 'flex',
                 flexDirection: 'row',
-                overflow: 'scroll',
               }}
             >
               {shelfRecords.length ? (

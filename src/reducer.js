@@ -29,11 +29,22 @@ export const reducer = (state, action) => {
         },
       };
     case 'addRecordToShelf':
+      if (state[action.shelfId].records.includes(action.recordId)) {
+        // TODO (bcato): Notify user addition failed?
+        return state;
+      }
+
+      const newRecordsOrder = [...state[action.shelfId].records];
+
+      // if no valid index is supplied assume we add to the end
+      const newIndex = Number.isInteger(action.newIndex) ? action.newIndex : newRecordsOrder.length;
+      newRecordsOrder.splice(newIndex, 0, action.recordId);
+
       return {
         ...state,
         [action.shelfId]: {
           ...state[action.shelfId],
-          records: state[action.shelfId].records.concat(action.recordId),
+          records: newRecordsOrder,
         },
       };
     case 'removeRecordFromShelf':
@@ -58,6 +69,10 @@ export const reducer = (state, action) => {
         },
       };
     case 'moveBetweenShelves':
+      if (state[action.newShelf].records.includes(state[action.oldShelf].records[action.oldIndex])) {
+        // TODO (bcato): Notify user addition failed? Still remove from old??
+        return state;
+      }
       const newShelf = [...state[action.newShelf].records];
       newShelf.splice(
         action.newIndex,
